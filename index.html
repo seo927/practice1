@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>영어 단어장</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,650&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #efe6d6;
+      --bg-deep: #e4d8c4;
+      --paper: #fffaf3;
+      --ink: #241c14;
+      --muted: #74685b;
+      --line: #e6d8c6;
+      --accent: #0e6b52;
+      --accent-deep: #0a5340;
+      --accent-soft: #e4f3ec;
+      --gold: #a86b12;
+      --gold-soft: #f8ecd4;
+      --wrong: #9d2c22;
+      --wrong-soft: #fde8e4;
+      --shadow: 0 18px 40px rgba(70, 46, 20, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #f7efe2 0%, transparent 55%),
+        linear-gradient(180deg, #f3eadc 0%, var(--bg) 40%, #e9decc 100%);
+    }
+
+    button, input { font-family: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: var(--ink);
+      color: #f6efe4;
+      display: grid;
+      place-items: center;
+      font-family: Newsreader, serif;
+      font-size: 26px;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+    }
+
+    .sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat {
+      background: rgba(255, 250, 243, 0.72);
+      border: 1px solid rgba(36, 28, 20, 0.08);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .stat strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 6px;
+      background: rgba(36, 28, 20, 0.06);
+      border-radius: 16px;
+      margin-bottom: 18px;
+    }
+
+    .modes button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 11px 8px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .modes button.active {
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(70, 46, 20, 0.08);
+    }
+
+    .panel {
+      background: var(--paper);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      padding: 22px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .bar {
+      height: 8px;
+      background: var(--bg-deep);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #148666, #0e6b52);
+      width: 0%;
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .scene {
+      perspective: 1200px;
+      min-height: 320px;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(.2, .8, .2, 1);
+      cursor: pointer;
+    }
+
+    .card.flipped { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.45), transparent 80px),
+        #fffdf9;
+    }
+
+    .face.back {
+      transform: rotateY(180deg);
+      background:
+        linear-gradient(180deg, rgba(228, 243, 236, 0.9), transparent 90px),
+        #fffdf9;
+    }
+
+    .chip-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .pos {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .word {
+      margin: 28px 0 6px;
+      font-family: Newsreader, serif;
+      font-size: clamp(42px, 7vw, 68px);
+      font-weight: 650;
+      letter-spacing: -0.035em;
+      line-height: 0.95;
+    }
+
+    .ipa {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hint {
+      margin-top: auto;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meaning {
+      margin: 22px 0 0;
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .example {
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .example p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .example .ko {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .speak, .ghost, .primary, .danger, .option, .icon-btn {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 13px 14px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .speak { background: var(--bg); }
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .primary:hover { background: var(--accent-deep); }
+    .danger {
+      background: #fff;
+      color: var(--wrong);
+      border-color: #f0c7c1;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: transparent;
+      padding-inline: 8px;
+    }
+
+    .summary {
+      text-align: center;
+      padding: 36px 12px 18px;
+    }
+
+    .summary h2 {
+      margin: 8px 0;
+      font-size: 30px;
+      letter-spacing: -0.04em;
+    }
+
+    .summary p { color: var(--muted); }
+
+    .quiz-q {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin: 8px 0 6px;
+      line-height: 1.2;
+    }
+
+    .quiz-q.en {
+      font-family: Newsreader, serif;
+      font-weight: 650;
+      font-size: clamp(36px, 6vw, 56px);
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .option {
+      text-align: left;
+      padding: 14px 16px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .option:hover:not(:disabled) { border-color: #c9b79d; }
+    .option.correct {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-deep);
+    }
+    .option.wrong {
+      background: var(--wrong-soft);
+      border-color: #e7b2ab;
+      color: var(--wrong);
+    }
+    .option:disabled { cursor: default; }
+
+    .feedback {
+      min-height: 24px;
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .feedback.good { color: var(--accent); }
+    .feedback.bad { color: var(--wrong); }
+
+    .search-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .search-row input {
+      flex: 1 1 220px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-row input:focus { border-color: #b7a48b; }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .filters button {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .filters button.active {
+      background: var(--ink);
+      color: #f6efe4;
+      border-color: var(--ink);
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .item-main {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      padding: 14px 14px;
+    }
+
+    .item-word {
+      font-family: Newsreader, serif;
+      font-size: 22px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+    }
+
+    .item-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .known-btn, .mini-speak {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 16px;
+    }
+
+    .known-btn.on {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .item-body {
+      display: none;
+      padding: 0 16px 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .item.open .item-body { display: block; }
+    .item-body strong { color: var(--ink); }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 8px;
+    }
+
+    .keys {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 680px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .stats { justify-content: flex-start; }
+      .actions { grid-template-columns: 1fr 1fr; }
+      .actions .speak { grid-column: 1 / -1; }
+      .face { padding: 22px 18px; }
+      .panel { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="mark">W</div>
+        <div>
+          <h1>영어 단어장</h1>
+          <p class="sub">카드를 뒤집고, 퀴즈로 확인하세요.</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">외운 단어 <strong id="knownCount">0</strong> / <span id="totalCount">0</span></div>
+        <div class="stat">오늘 학습 <strong id="todayCount">0</strong></div>
+        <div class="stat">퀴즈 정답률 <strong id="quizRate">-</strong></div>
+      </div>
+    </header>
+
+    <nav class="modes" role="tablist">
+      <button type="button" class="active" data-mode="cards">카드</button>
+      <button type="button" data-mode="quiz">퀴즈</button>
+      <button type="button" data-mode="list">단어장</button>
+    </nav>
+
+    <main class="panel" id="panel"></main>
+  </div>
+
+  <script>
+    const WORDS = [
+      { id: 1, word: "achieve", ipa: "/əˈtʃiːv/", pos: "동사", meaning: "성취하다", example: "She achieved her goal after months of practice.", exampleKo: "그녀는 몇 달간의 연습 끝에 목표를 이뤘다.", category: "학업" },
+      { id: 2, word: "consider", ipa: "/kənˈsɪdər/", pos: "동사", meaning: "고려하다", example: "Please consider both options before you decide.", exampleKo: "결정하기 전에 두 가지 선택지를 모두 고려해 주세요.", category: "기초" },
+      { id: 3, word: "decide", ipa: "/dɪˈsaɪd/", pos: "동사", meaning: "결정하다", example: "I decided to study English every morning.", exampleKo: "나는 매일 아침 영어를 공부하기로 결정했다.", category: "기초" },
+      { id: 4, word: "explain", ipa: "/ɪkˈspleɪn/", pos: "동사", meaning: "설명하다", example: "Can you explain this sentence in simple words?", exampleKo: "이 문장을 쉬운 말로 설명해 줄 수 있어요?", category: "학업" },
+      { id: 5, word: "improve", ipa: "/ɪmˈpruːv/", pos: "동사", meaning: "향상시키다", example: "Reading every day will improve your vocabulary.", exampleKo: "매일 읽으면 어휘가 늘어요.", category: "학업" },
+      { id: 6, word: "suggest", ipa: "/səˈdʒest/", pos: "동사", meaning: "제안하다", example: "I suggest we take a short break.", exampleKo: "잠깐 쉬는 게 좋겠어요.", category: "일상" },
+      { id: 7, word: "require", ipa: "/rɪˈkwaɪər/", pos: "동사", meaning: "필요로 하다", example: "This class requires a short essay.", exampleKo: "이 수업은 짧은 에세이가 필요해요.", category: "학업" },
+      { id: 8, word: "provide", ipa: "/prəˈvaɪd/", pos: "동사", meaning: "제공하다", example: "The school provides free tutoring.", exampleKo: "학교는 무료 튜터링을 제공해요.", category: "일상" },
+      { id: 9, word: "develop", ipa: "/dɪˈveləp/", pos: "동사", meaning: "발전시키다", example: "He developed a new study habit.", exampleKo: "그는 새로운 공부 습관을 만들었다.", category: "학업" },
+      { id: 10, word: "compare", ipa: "/kəmˈper/", pos: "동사", meaning: "비교하다", example: "Compare the two answers and choose one.", exampleKo: "두 답을 비교한 뒤 하나를 고르세요.", category: "학업" },
+      { id: 11, word: "appointment", ipa: "/əˈpɔɪntmənt/", pos: "명사", meaning: "약속, 예약", example: "I have a dentist appointment at three.", exampleKo: "세 시에 치과 예약이 있어요.", category: "일상" },
+      { id: 12, word: "schedule", ipa: "/ˈskedʒuːl/", pos: "명사", meaning: "일정", example: "My schedule is full this week.", exampleKo: "이번 주 일정이 꽉 찼어요.", category: "일상" },
+      { id: 13, word: "borrow", ipa: "/ˈbɑːroʊ/", pos: "동사", meaning: "빌리다", example: "May I borrow your pen?", exampleKo: "펜 좀 빌려도 될까요?", category: "기초" },
+      { id: 14, word: "convenient", ipa: "/kənˈviːniənt/", pos: "형용사", meaning: "편리한", example: "This cafe is convenient for studying.", exampleKo: "이 카페는 공부하기에 편리해요.", category: "일상" },
+      { id: 15, word: "available", ipa: "/əˈveɪləbl/", pos: "형용사", meaning: "이용할 수 있는", example: "Are you available after class?", exampleKo: "수업 후에 시간 돼요?", category: "일상" },
+      { id: 16, word: "although", ipa: "/ɔːlˈðoʊ/", pos: "접속사", meaning: "비록 ~이지만", example: "Although it was late, she kept studying.", exampleKo: "늦었지만 그녀는 계속 공부했다.", category: "기초" },
+      { id: 17, word: "instead", ipa: "/ɪnˈsted/", pos: "부사", meaning: "대신에", example: "Let's walk instead of taking the bus.", exampleKo: "버스 타는 대신 걸어가자.", category: "기초" },
+      { id: 18, word: "recently", ipa: "/ˈriːsntli/", pos: "부사", meaning: "최근에", example: "I recently started a vocabulary notebook.", exampleKo: "나는 최근에 단어장을 시작했다.", category: "일상" },
+      { id: 19, word: "anxious", ipa: "/ˈæŋkʃəs/", pos: "형용사", meaning: "불안한", example: "He feels anxious before exams.", exampleKo: "그는 시험 전에 불안해한다.", category: "감정" },
+      { id: 20, word: "grateful", ipa: "/ˈɡreɪtfl/", pos: "형용사", meaning: "감사하는", example: "I am grateful for your advice.", exampleKo: "조언해 줘서 고마워요.", category: "감정" },
+      { id: 21, word: "confident", ipa: "/ˈkɑːnfɪdənt/", pos: "형용사", meaning: "자신 있는", example: "She felt confident after the review.", exampleKo: "복습 후에 그녀는 자신감이 생겼다.", category: "감정" },
+      { id: 22, word: "disappointed", ipa: "/ˌdɪsəˈpɔɪntɪd/", pos: "형용사", meaning: "실망한", example: "I was disappointed with my score.", exampleKo: "점수에 실망했어요.", category: "감정" },
+      { id: 23, word: "curious", ipa: "/ˈkjʊriəs/", pos: "형용사", meaning: "호기심 있는", example: "Kids are curious about new words.", exampleKo: "아이들은 새로운 단어에 호기심이 많아요.", category: "감정" },
+      { id: 24, word: "relieved", ipa: "/rɪˈliːvd/", pos: "형용사", meaning: "안도하는", example: "I felt relieved when the test ended.", exampleKo: "시험이 끝나자 안도감이 들었다.", category: "감정" },
+      { id: 25, word: "proud", ipa: "/praʊd/", pos: "형용사", meaning: "자랑스러운", example: "Her parents are proud of her effort.", exampleKo: "부모님은 그녀의 노력을 자랑스러워한다.", category: "감정" },
+      { id: 26, word: "assignment", ipa: "/əˈsaɪnmənt/", pos: "명사", meaning: "과제", example: "The assignment is due on Friday.", exampleKo: "과제는 금요일까지예요.", category: "학업" },
+      { id: 27, word: "deadline", ipa: "/ˈdedlaɪn/", pos: "명사", meaning: "마감 기한", example: "Don't miss the deadline.", exampleKo: "마감 기한을 놓치지 마세요.", category: "학업" },
+      { id: 28, word: "research", ipa: "/rɪˈsɜːrtʃ/", pos: "동사", meaning: "조사하다", example: "I need to research this topic tonight.", exampleKo: "오늘 밤에 이 주제를 조사해야 해요.", category: "학업" },
+      { id: 29, word: "summarize", ipa: "/ˈsʌməraɪz/", pos: "동사", meaning: "요약하다", example: "Summarize the paragraph in one sentence.", exampleKo: "그 문단을 한 문장으로 요약하세요.", category: "학업" },
+      { id: 30, word: "evidence", ipa: "/ˈevɪdəns/", pos: "명사", meaning: "증거", example: "Use evidence to support your opinion.", exampleKo: "의견을 뒷받침할 증거를 쓰세요.", category: "학업" },
+      { id: 31, word: "conclusion", ipa: "/kənˈkluːʒn/", pos: "명사", meaning: "결론", example: "The conclusion should be short and clear.", exampleKo: "결론은 짧고 분명해야 해요.", category: "학업" },
+      { id: 32, word: "vocabulary", ipa: "/vəˈkæbjəleri/", pos: "명사", meaning: "어휘", example: "A wide vocabulary makes reading easier.", exampleKo: "어휘가 넓으면 읽기가 쉬워져요.", category: "학업" },
+      { id: 33, word: "destination", ipa: "/ˌdestɪˈneɪʃn/", pos: "명사", meaning: "목적지", example: "Our destination is the old library.", exampleKo: "우리 목적지는 오래된 도서관이에요.", category: "여행" },
+      { id: 34, word: "reservation", ipa: "/ˌrezərˈveɪʃn/", pos: "명사", meaning: "예약", example: "I made a reservation for two.", exampleKo: "두 명으로 예약했어요.", category: "여행" },
+      { id: 35, word: "luggage", ipa: "/ˈlʌɡɪdʒ/", pos: "명사", meaning: "짐", example: "Please keep your luggage close.", exampleKo: "짐을 가까이 두세요.", category: "여행" },
+      { id: 36, word: "direction", ipa: "/dəˈrekʃn/", pos: "명사", meaning: "방향", example: "Could you give me directions to the station?", exampleKo: "역으로 가는 길을 알려 주실래요?", category: "여행" },
+      { id: 37, word: "environment", ipa: "/ɪnˈvaɪrənmənt/", pos: "명사", meaning: "환경", example: "A quiet environment helps me focus.", exampleKo: "조용한 환경이 집중에 도움이 돼요.", category: "일상" },
+      { id: 38, word: "opportunity", ipa: "/ˌɑːpərˈtuːnəti/", pos: "명사", meaning: "기회", example: "This is a good opportunity to practice.", exampleKo: "연습하기에 좋은 기회예요.", category: "일상" },
+      { id: 39, word: "responsibility", ipa: "/rɪˌspɑːnsəˈbɪləti/", pos: "명사", meaning: "책임", example: "Finishing homework is your responsibility.", exampleKo: "숙제를 끝내는 것은 너의 책임이야.", category: "학업" },
+      { id: 40, word: "experience", ipa: "/ɪkˈspɪriəns/", pos: "명사", meaning: "경험", example: "Travel is a valuable experience.", exampleKo: "여행은 값진 경험이에요.", category: "여행" },
+      { id: 41, word: "opinion", ipa: "/əˈpɪnjən/", pos: "명사", meaning: "의견", example: "In my opinion, review is more important than speed.", exampleKo: "내 생각에는 속도보다 복습이 더 중요해요.", category: "학업" },
+      { id: 42, word: "advantage", ipa: "/ədˈvæntɪdʒ/", pos: "명사", meaning: "장점", example: "One advantage of flashcards is quick review.", exampleKo: "단어 카드의 장점 하나는 빠른 복습이에요.", category: "기초" },
+      { id: 43, word: "challenge", ipa: "/ˈtʃælɪndʒ/", pos: "명사", meaning: "도전, 어려운 과제", example: "Learning pronunciation is a challenge.", exampleKo: "발음을 익히는 것은 어려운 과제예요.", category: "학업" },
+      { id: 44, word: "habit", ipa: "/ˈhæbɪt/", pos: "명사", meaning: "습관", example: "Make a habit of reviewing ten words a day.", exampleKo: "하루에 단어 열 개를 복습하는 습관을 들이세요.", category: "일상" },
+      { id: 45, word: "notice", ipa: "/ˈnoʊtɪs/", pos: "동사", meaning: "알아차리다", example: "Did you notice the new word in the title?", exampleKo: "제목에 있는 새 단어를 알아챘어요?", category: "기초" },
+      { id: 46, word: "avoid", ipa: "/əˈvɔɪd/", pos: "동사", meaning: "피하다", example: "Avoid memorizing words without an example.", exampleKo: "예문 없이 단어만 외우는 것은 피하세요.", category: "학업" },
+      { id: 47, word: "manage", ipa: "/ˈmænɪdʒ/", pos: "동사", meaning: "해내다, 관리하다", example: "I managed to finish the quiz.", exampleKo: "나는 퀴즈를 겨우 끝냈다.", category: "일상" },
+      { id: 48, word: "recommend", ipa: "/ˌrekəˈmend/", pos: "동사", meaning: "추천하다", example: "I recommend saying the word out loud.", exampleKo: "단어를 소리 내어 말해 보기를 추천해요.", category: "일상" }
+    ];
+
+    const STORAGE_KEY = "english-vocab-progress-v1";
+    const todayKey = new Date().toISOString().slice(0, 10);
+
+    const state = {
+      mode: "cards",
+      progress: loadProgress(),
+      queue: [],
+      index: 0,
+      flipped: false,
+      sessionKnown: 0,
+      sessionAgain: 0,
+      finished: false,
+      quiz: null,
+      quizAnswered: false,
+      filter: "전체",
+      query: "",
+      openId: null
+    };
+
+    function loadProgress() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        return {
+          known: Array.isArray(raw.known) ? raw.known : [],
+          quizCorrect: Number(raw.quizCorrect) || 0,
+          quizTotal: Number(raw.quizTotal) || 0,
+          today: raw.today === todayKey ? todayKey : todayKey,
+          todayCount: raw.today === todayKey ? Number(raw.todayCount) || 0 : 0
+        };
+      } catch {
+        return { known: [], quizCorrect: 0, quizTotal: 0, today: todayKey, todayCount: 0 };
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress));
+      renderStats();
+    }
+
+    function isKnown(id) {
+      return state.progress.known.includes(id);
+    }
+
+    function markToday() {
+      state.progress.today = todayKey;
+      state.progress.todayCount += 1;
+      saveProgress();
+    }
+
+    function shuffle(list) {
+      const copy = list.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function buildQueue() {
+      const unknown = WORDS.filter((word) => !isKnown(word.id));
+      const known = WORDS.filter((word) => isKnown(word.id));
+      state.queue = shuffle(unknown).concat(shuffle(known));
+      state.index = 0;
+      state.flipped = false;
+      state.sessionKnown = 0;
+      state.sessionAgain = 0;
+      state.finished = state.queue.length === 0;
+    }
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = 0.92;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function currentWord() {
+      return state.queue[state.index];
+    }
+
+    function renderStats() {
+      document.getElementById("knownCount").textContent = state.progress.known.length;
+      document.getElementById("totalCount").textContent = WORDS.length;
+      document.getElementById("todayCount").textContent = state.progress.todayCount;
+      const rate = state.progress.quizTotal
+        ? Math.round((state.progress.quizCorrect / state.progress.quizTotal) * 100) + "%"
+        : "-";
+      document.getElementById("quizRate").textContent = rate;
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      document.querySelectorAll(".modes button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.mode === mode);
+      });
+      if (mode === "cards" && state.queue.length === 0) buildQueue();
+      if (mode === "quiz" && !state.quiz) nextQuiz();
+      render();
+    }
+
+    function render() {
+      const panel = document.getElementById("panel");
+      if (state.mode === "cards") panel.innerHTML = renderCards();
+      if (state.mode === "quiz") panel.innerHTML = renderQuiz();
+      if (state.mode === "list") panel.innerHTML = renderList();
+      bind();
+    }
+
+    function renderCards() {
+      if (state.finished) {
+        return `
+          <div class="summary">
+            <div class="chip">학습 완료</div>
+            <h2>한 바퀴를 돌았어요</h2>
+            <p>알아요 ${state.sessionKnown}개 · 다시 볼게요 ${state.sessionAgain}개</p>
+            <div class="actions" style="max-width:420px;margin:22px auto 0;grid-template-columns:1fr;">
+              <button class="primary" id="restart" type="button">처음부터 다시</button>
+            </div>
+          </div>`;
+      }
+
+      const word = currentWord();
+      const step = state.index + 1;
+      const ratio = ((step - 1) / state.queue.length) * 100;
+      return `
+        <div class="toolbar">
+          <div style="flex:1">
+            <div class="progress-label">${step} / ${state.queue.length} · ${isKnown(word.id) ? "이미 외운 단어" : "아직 낯선 단어"}</div>
+            <div class="bar"><span style="width:${ratio}%"></span></div>
+          </div>
+          <button class="ghost" id="restart" type="button">섞기</button>
+        </div>
+        <div class="scene">
+          <div class="card ${state.flipped ? "flipped" : ""}" id="card">
+            <div class="face">
+              <div class="chip-row">
+                <span class="chip">${word.category}</span>
+                <span class="pos">${word.pos}</span>
+              </div>
+              <div class="word">${word.word}</div>
+              <p class="ipa">${word.ipa}</p>
+              <p class="hint">카드를 눌러 뜻을 확인하세요</p>
+            </div>
+            <div class="face back">
+              <div class="chip-row">
+                <span class="chip">${word.category}</span>
+                <span class="pos">${word.word}</span>
+              </div>
+              <div class="meaning">${word.meaning}</div>
+              <div class="example">
+                <p>${word.example}</p>
+                <p class="ko">${word.exampleKo}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="speak" id="speak" type="button">발음 듣기</button>
+          <button class="danger" id="again" type="button">다시 볼게요</button>
+          <button class="primary" id="know" type="button">알아요</button>
+        </div>
+        <p class="keys">Space 뒤집기 · ← 다시 · → 알아요</p>`;
+    }
+
+    function renderQuiz() {
+      const quiz = state.quiz;
+      if (!quiz) return "";
+      const ratio = state.progress.quizTotal
+        ? Math.round((state.progress.quizCorrect / state.progress.quizTotal) * 100)
+        : 0;
+      return `
+        <div class="toolbar">
+          <div style="flex:1">
+            <div class="progress-label">이번 기록 ${state.progress.quizCorrect} / ${state.progress.quizTotal}</div>
+            <div class="bar"><span style="width:${ratio}%"></span></div>
+          </div>
+          <button class="ghost" id="newQuiz" type="button">다른 문제</button>
+        </div>
+        <div class="chip">${quiz.promptKo ? "뜻을 보고 단어를 고르세요" : "단어를 보고 뜻을 고르세요"}</div>
+        <div class="quiz-q ${quiz.promptKo ? "" : "en"}">${quiz.prompt}</div>
+        <p class="ipa">${quiz.promptKo ? quiz.word.pos : quiz.word.ipa}</p>
+        <div class="options">
+          ${quiz.choices.map((choice, index) => {
+            let cls = "option";
+            if (state.quizAnswered && choice.id === quiz.word.id) cls += " correct";
+            if (state.quizAnswered && index === quiz.picked && choice.id !== quiz.word.id) cls += " wrong";
+            return `<button class="${cls}" data-choice="${index}" type="button" ${state.quizAnswered ? "disabled" : ""}>${choice.label}</button>`;
+          }).join("")}
+        </div>
+        <div class="feedback ${state.quizAnswered ? (quiz.correct ? "good" : "bad") : ""}">
+          ${state.quizAnswered ? (quiz.correct ? "맞았어요." : `정답은 ${quiz.word.word} · ${quiz.word.meaning}`) : ""}
+        </div>
+        <div class="actions" style="grid-template-columns: auto 1fr;">
+          <button class="speak" id="speak" type="button">발음 듣기</button>
+          <button class="primary" id="nextQuiz" type="button" ${state.quizAnswered ? "" : "disabled"}>${state.quizAnswered ? "다음 문제" : "답을 먼저 고르세요"}</button>
+        </div>`;
+    }
+
+    function renderList() {
+      const categories = ["전체", ...new Set(WORDS.map((word) => word.category))];
+      const query = state.query.trim().toLowerCase();
+      const items = WORDS.filter((word) => {
+        const inCategory = state.filter === "전체" || word.category === state.filter;
+        const inQuery = !query
+          || word.word.toLowerCase().includes(query)
+          || word.meaning.includes(state.query.trim());
+        return inCategory && inQuery;
+      });
+
+      return `
+        <div class="search-row">
+          <input id="search" type="search" placeholder="단어 또는 뜻 검색" value="${escapeHtml(state.query)}">
+          <button class="ghost" id="resetProgress" type="button">기록 지우기</button>
+        </div>
+        <div class="filters">
+          ${categories.map((category) => `<button type="button" data-filter="${category}" class="${state.filter === category ? "active" : ""}">${category}</button>`).join("")}
+        </div>
+        <div class="list">
+          ${items.length ? items.map((word) => `
+            <article class="item ${state.openId === word.id ? "open" : ""}">
+              <div class="item-main">
+                <button type="button" data-open="${word.id}" style="background:transparent;border:0;text-align:left;padding:0;">
+                  <div class="item-word">${word.word}</div>
+                  <div class="item-meta">${word.pos} · ${word.meaning}</div>
+                </button>
+                <button class="mini-speak" data-speak="${word.id}" type="button" aria-label="발음 듣기">🔊</button>
+                <button class="known-btn ${isKnown(word.id) ? "on" : ""}" data-known="${word.id}" type="button" aria-label="외움 표시">${isKnown(word.id) ? "✓" : ""}</button>
+              </div>
+              <div class="item-body">
+                <div>${word.ipa}</div>
+                <div><strong>${escapeHtml(word.example)}</strong></div>
+                <div>${escapeHtml(word.exampleKo)}</div>
+              </div>
+            </article>`).join("") : `<div class="empty">찾는 단어가 없어요.</div>`}
+        </div>`;
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function nextQuiz() {
+      const word = WORDS[Math.floor(Math.random() * WORDS.length)];
+      const promptKo = Math.random() < 0.5;
+      const pool = shuffle(WORDS.filter((item) => item.id !== word.id)).slice(0, 3);
+      const choices = shuffle([word, ...pool]).map((item) => ({
+        id: item.id,
+        label: promptKo ? item.word : item.meaning
+      }));
+      state.quiz = {
+        word,
+        promptKo,
+        prompt: promptKo ? word.meaning : word.word,
+        choices,
+        picked: null,
+        correct: false
+      };
+      state.quizAnswered = false;
+    }
+
+    function answerQuiz(index) {
+      if (state.quizAnswered) return;
+      const choice = state.quiz.choices[index];
+      state.quiz.picked = index;
+      state.quiz.correct = choice.id === state.quiz.word.id;
+      state.quizAnswered = true;
+      state.progress.quizTotal += 1;
+      if (state.quiz.correct) {
+        state.progress.quizCorrect += 1;
+        if (!isKnown(state.quiz.word.id)) state.progress.known.push(state.quiz.word.id);
+      }
+      markToday();
+      render();
+    }
+
+    function gradeCard(known) {
+      const word = currentWord();
+      if (!word) return;
+      if (known) {
+        if (!isKnown(word.id)) state.progress.known.push(word.id);
+        state.sessionKnown += 1;
+      } else {
+        state.progress.known = state.progress.known.filter((id) => id !== word.id);
+        state.sessionAgain += 1;
+      }
+      markToday();
+      state.flipped = false;
+      if (state.index >= state.queue.length - 1) {
+        state.finished = true;
+      } else {
+        state.index += 1;
+      }
+      render();
+    }
+
+    function bind() {
+      const card = document.getElementById("card");
+      if (card) {
+        card.addEventListener("click", () => {
+          state.flipped = !state.flipped;
+          card.classList.toggle("flipped", state.flipped);
+        });
+      }
+
+      const speakBtn = document.getElementById("speak");
+      if (speakBtn) {
+        speakBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const word = state.mode === "quiz" ? state.quiz.word : currentWord();
+          speak(word.word);
+        });
+      }
+
+      document.getElementById("know")?.addEventListener("click", () => gradeCard(true));
+      document.getElementById("again")?.addEventListener("click", () => gradeCard(false));
+      document.getElementById("restart")?.addEventListener("click", () => {
+        buildQueue();
+        render();
+      });
+      document.getElementById("newQuiz")?.addEventListener("click", () => {
+        nextQuiz();
+        render();
+      });
+      document.getElementById("nextQuiz")?.addEventListener("click", () => {
+        if (!state.quizAnswered) return;
+        nextQuiz();
+        render();
+      });
+
+      document.querySelectorAll("[data-choice]").forEach((button) => {
+        button.addEventListener("click", () => answerQuiz(Number(button.dataset.choice)));
+      });
+
+      const search = document.getElementById("search");
+      if (search) {
+        search.addEventListener("input", () => {
+          state.query = search.value;
+          const caret = search.selectionStart;
+          render();
+          const next = document.getElementById("search");
+          next.focus();
+          next.setSelectionRange(caret, caret);
+        });
+      }
+
+      document.querySelectorAll("[data-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.filter = button.dataset.filter;
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-open]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const id = Number(button.dataset.open);
+          state.openId = state.openId === id ? null : id;
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-speak]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const word = WORDS.find((item) => item.id === Number(button.dataset.speak));
+          speak(word.word);
+        });
+      });
+
+      document.querySelectorAll("[data-known]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const id = Number(button.dataset.known);
+          if (isKnown(id)) state.progress.known = state.progress.known.filter((item) => item !== id);
+          else state.progress.known.push(id);
+          saveProgress();
+          render();
+        });
+      });
+
+      document.getElementById("resetProgress")?.addEventListener("click", () => {
+        if (!confirm("외운 단어와 퀴즈 기록을 지울까요?")) return;
+        state.progress = { known: [], quizCorrect: 0, quizTotal: 0, today: todayKey, todayCount: 0 };
+        saveProgress();
+        buildQueue();
+        render();
+      });
+    }
+
+    document.querySelectorAll(".modes button").forEach((button) => {
+      button.addEventListener("click", () => setMode(button.dataset.mode));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const typing = event.target.matches("input, textarea");
+      if (typing) return;
+      if (state.mode === "cards" && !state.finished) {
+        if (event.code === "Space") {
+          event.preventDefault();
+          state.flipped = !state.flipped;
+          document.getElementById("card")?.classList.toggle("flipped", state.flipped);
+        }
+        if (event.key === "ArrowRight") gradeCard(true);
+        if (event.key === "ArrowLeft") gradeCard(false);
+      }
+      if (state.mode === "quiz" && state.quizAnswered && event.key === "Enter") {
+        nextQuiz();
+        render();
+      }
+    });
+
+    buildQueue();
+    renderStats();
+    render();
+  </script>
+</body>
+</html>
